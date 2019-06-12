@@ -1,6 +1,7 @@
 package kmeans;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -16,7 +17,7 @@ public class Centroid {
 	// array to represent coordinates of the vector
 	private double[] vector;
 	
-	// public Liste Referenzen, bzw ihm zugeteilte DataPoints --> löschen, neu befüllen
+	// list with referenced data Points
 	private List<DataPoint> references = new ArrayList<DataPoint>();
 	
 	// constructors
@@ -93,13 +94,14 @@ public class Centroid {
 	 * @return prints all DataPoints referenced to Centroid
 	 */
 	public void printReferences() {
-		System.out.print("cen:");
+		System.out.print("\ncen: ");
 		printCentroid();
 		System.out.print("points: ");
-		System.out.print("\n");
-		for (int i=0; i < this.references.size(); i++) {
-			references.get(i).printVector();
-			
+		// iterate through assigned data points with list iterator
+		Iterator<DataPoint> iter = this.getReferences().iterator();
+		while(iter.hasNext()) {
+			iter.next().printVector();
+			System.out.print(" ");
 		}
 		System.out.print("\n");
 	}

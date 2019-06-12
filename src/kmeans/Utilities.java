@@ -1,11 +1,22 @@
 package kmeans;
 
+//import java.util.Iterator;
+
 /**
  * 
  * @author florianwolf
  *
- * this class provides functions for the k-means algorithm
- *
+ * this class provides the following functions for the k-means algorithm
+ *	- pNorm 
+ *	- linear Normalization
+ *	- argMin
+ *	- upCurrCentroids
+ *	- updateCentroid
+ *	- stillChange
+ *	- printResults
+ *	- getMinComponents
+ *	- getRandomCentroids
+ *	
  */
 
 public class Utilities{	
@@ -89,13 +100,16 @@ public class Utilities{
 		// iterate through all centroids
 		for(int j = 0; j < k; j++) {
 			// update all of them one by one
-//			System.out.print("Old Vector");
-//			currCentroids[j].printCentroid();
 			
-			tempArray[j] = updateCentroid(currCentroids[j]);
+			// check if the centroid has assigned data points 
+			if(currCentroids[j].getReferences().size() > 0) {
+				tempArray[j] = updateCentroid(currCentroids[j]);
+			}
+			// if a centroid has no references, he will stay
+			else {
+				tempArray[j] = currCentroids[j];
+			}
 			
-//			System.out.print("New Vector");
-//			tempArray[j].printCentroid();
 		}
 		return tempArray;
 	}
@@ -106,13 +120,46 @@ public class Utilities{
 	 * @return newCentroid
 	 * @throws Exception
 	 */
-	public static Centroid updateCentroid(Centroid currCentroid) throws Exception {
-		double[] temp;
+	private static Centroid updateCentroid(Centroid currCentroid) throws Exception {
 		int dimension;
-		// dimension, the new vector should have
+		// dimension, the new vector should have (this vector exists, because the
+		// function calling this function is checking it)
 		dimension = currCentroid.getDataPoint(0).getDimension();
 		// temp vector, to hold new coordinates
-		temp = new double[dimension];
+		double[] temp = new double[dimension];
+		
+		
+//		Iterator<DataPoint> iter = (currCentroid.getReferences()).iterator();
+		//iterate through all data points assigned to the current centroid
+		
+//		//currCentroid.printCentroid();
+//		//System.out.println("Länge: " + (currCentroid.getReferences()).size());
+//		while(iter.hasNext()) {
+//			//iter.next().printVector();
+//			//System.out.print("\n" + (iter.next()).getCoord(0));
+//			for(int i = 0; i < dimension; i++) {
+//				// sum over all coordinates off all vectors
+//				temp[i] = temp[i] + (iter.next()).getCoord(i);
+//			}
+//			
+//		}
+		
+		/* ------------------------------------------------------------------
+		 * Note: I am not using the list iterator at this point, because of
+		 * different reasons:
+		 * ------------------------------------------------------------------
+		 * 	- I don't change any objects inside the lists,
+		 * 		as well as I don't change its size
+		 *  - I have to iterate through every component of every list object
+		 *  	a realization of this with the list iterator is way to complicated
+		 *  	because I can't hold a current list element, without getting the 
+		 *  	next on (iter.next()) because I need this command multiple times
+		 *  	(while iterating through each component of a vector)
+		 *  	so I don't get the right vector components without traversing
+		 *  	my list from front to back and so on
+		 * ------------------------------------------------------------------
+		 */
+		
 		//iterate through all data points assigned to the current centroid
 		for(int k = 0; k < currCentroid.getReferences().size(); k++) {
 			for(int i = 0; i < dimension; i++) {
@@ -120,12 +167,14 @@ public class Utilities{
 				temp[i] = temp[i] + currCentroid.getDataPoint(k).getCoord(i);
 			}
 		}
+		
 		// get mean value of each coordinate
 		for(int l = 0; l < dimension; l++) {
-			temp[l] = temp[l]/currCentroid.getReferences().size();
+			temp[l] = temp[l]/(currCentroid.getReferences()).size();
 		}
+		
 		// construct new centroid
-		return new Centroid(temp);
+		return (new Centroid(temp));
 		
 	}
 	
@@ -215,7 +264,10 @@ public class Utilities{
 			for(int i = 0; i < k; i++) {
 				// get random index, possibilities reduced by each loop iteration
 				// current last element is random centroid from iteration before
-				index = (int) Math.random() * (points.length - i);
+				
+				index = (int) (Math.random() * (points.length - i));
+				
+				
 				// Switch selected data point to the end, use temp variable
 				DataPoint temp = points[index];
 				points[index] = points[points.length - (i+1)];

@@ -63,7 +63,8 @@ public class DataPoint {
 			System.out.print(vector[j] + "/");
 		}
 		System.out.print(vector[vector.length -1]);
-		System.out.print(")\n");
+		System.out.print(")");
+		//System.out.print("\n");
 	}
 	
 	
