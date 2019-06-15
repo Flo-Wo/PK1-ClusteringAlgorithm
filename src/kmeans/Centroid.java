@@ -12,40 +12,23 @@ import java.util.List;
  *
  */
 
-public class Centroid {
+public class Centroid extends Vector{
 	// properties
-	// array to represent coordinates of the vector
-	private double[] vector;
-	
 	// list with referenced data Points
 	private List<DataPoint> references = new ArrayList<DataPoint>();
 	
 	// constructors
+	/**
+	 * Constructor for a centroid with an empty list of references
+	 * @param vector
+	 */
 	public Centroid(double[] vector) {
+		super(vector);
 		this.references = new ArrayList<DataPoint>();
-		this.vector = vector;
 	}
 	
 	
 	// set/get methods
-	
-	/**
-	 * gets a specific coordinate of a vector
-	 * @param index
-	 * @return vector coordinate to this index
-	 */
-	public double getCoord(int index) {
-		return(vector[index]);
-	}
-	
-	/**
-	 * 
-	 * @return vector coordinates
-	 */
-	public double[] getVector() {
-		return this.vector;
-	}
-	
 	/**
 	 * returns the list with all references
 	 * @return references
@@ -55,13 +38,13 @@ public class Centroid {
 	}
 	
 	/**
-	 * returns a Data Point assigned to the centroid ro a given index
+	 * returns a Data Point assigned to the centroid to a given index
 	 * @param index
 	 * @return DataPoint
 	 * @throws Exception
 	 */
 	public DataPoint getDataPoint(int index) throws Exception{
-		if (index > references.size()) {
+		if (index > references.size() || index < 0) {
 			throw new Exception("No element with this index.");
 		}
 		else {
@@ -79,23 +62,12 @@ public class Centroid {
 	// others
 	
 	/**
-	 * @return prints centroid as vector
-	 */
-	public void printCentroid() {
-		System.out.print("(");
-		for(int j = 0 ; j < vector.length - 1; j++) {
-			System.out.print(vector[j] + "/");
-		}
-		System.out.print(vector[vector.length -1]);
-		System.out.print(")\n");
-	}
-	
-	/**
 	 * @return prints all DataPoints referenced to Centroid
+	 * @throws Exception 
 	 */
-	public void printReferences() {
+	public void printReferences() throws Exception {
 		System.out.print("\ncen: ");
-		printCentroid();
+		printVector();
 		System.out.print("points: ");
 		// iterate through assigned data points with list iterator
 		Iterator<DataPoint> iter = this.getReferences().iterator();

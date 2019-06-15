@@ -143,15 +143,6 @@ public class Utilities{
 			}
 			
 		}
-		
-//		//iterate through all data points assigned to the current centroid
-//		for(int k = 0; k < currCentroid.getReferences().size(); k++) {
-//			for(int i = 0; i < dimension; i++) {
-//				// sum over all coordinates off all vectors
-//				temp[i] = temp[i] + currCentroid.getDataPoint(k).getCoord(i);
-//			}
-//		}
-		
 		// get mean value of each coordinate
 		for(int l = 0; l < dimension; l++) {
 			temp[l] = temp[l]/(currCentroid.getReferences()).size();
@@ -197,8 +188,9 @@ public class Utilities{
 	 * prints all centroids and their referenced data points
 	 * @param finalCentroids
 	 * @param k
+	 * @throws Exception 
 	 */
-	public static void printResults(Centroid[] finalCentroids, int k) {
+	public static void printResults(Centroid[] finalCentroids, int k) throws Exception {
 		for(int i = 0; i < k; i++) {
 			finalCentroids[i].printReferences();
 		}
@@ -209,8 +201,9 @@ public class Utilities{
 	 * using the absolute minimal value and divides it by 1000
 	 * @param points
 	 * @return minCoeff
+	 * @throws Exception 
 	 */
-	public static double getMinComponent(DataPoint[] points) {
+	public static double getMinComponent(DataPoint[] points) throws Exception {
 		// set to positive infinity, to get directly a smaller value
 		double minCoeff = Double.POSITIVE_INFINITY;
 		// iterate through all data points

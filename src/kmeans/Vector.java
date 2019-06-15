@@ -1,22 +1,49 @@
 package kmeans;
 
+/**
+ * 
+ * @author florianwolf
+ * implementation of the vector interface
+ * realization of an n-dimensional vector in space
+ * used to represent a data point for the k-means algorithm
+ *
+ */
 public class Vector implements VectorI{
 	
+	// properties
 	private double[] coordinates;
 	
+	// constructors
+	/**
+	 * Constructor
+	 * @param coordinates
+	 */
 	public Vector(double... coordinates) {
 		this.coordinates = coordinates;
 	}
 	
+	// set/get methods
+	/**
+	 * Get vector
+	 * @return array (vector)
+	 */
 	public double[] getVector() {
 		return this.coordinates;
 	}
-	
+	/**
+	 * Returns the dimension of a vector
+	 * @return dimension
+	 */
 	public int getDimension() {
 		return this.coordinates.length;
 	}
-	
-	public double getCoordinate(int index) throws Exception {
+	/**
+	 * Returns the vector coordinate to a specific index
+	 * @param index
+	 * @return coordinate
+	 * @throws Exception
+	 */
+	public double getCoord(int index) throws Exception {
 		if(index < 0 || index > this.getDimension()) {
 			throw new Exception("Index too high or negative.");
 		}
@@ -24,12 +51,17 @@ public class Vector implements VectorI{
 			return this.coordinates[index];
 		}
 	}
+	/**
+	 * Method to print a vector
+	 * @return printed vector
+	 * @throws Exception
+	 */
 	public void printVector() throws Exception{
 		System.out.print("(");
 		for(int j = 0 ; j < this.getDimension() - 1; j++) {
-			System.out.print(this.getCoordinate(j) + "/");
+			System.out.print(this.getCoord(j) + "/");
 		}
-		System.out.print(this.getCoordinate(this.getDimension() - 1));
+		System.out.print(this.getCoord(this.getDimension() - 1));
 		System.out.print(")");
 	}
 
