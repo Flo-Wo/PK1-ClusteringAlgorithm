@@ -58,9 +58,7 @@ public class Centroid extends Vector{
 	public void addDataPoint(DataPoint dataPoint) {
 		this.references.add(dataPoint);
 	}
-	
 	// others
-	
 	/**
 	 * @return prints all DataPoints referenced to Centroid
 	 * @throws Exception 
@@ -68,7 +66,7 @@ public class Centroid extends Vector{
 	public void printReferences() throws Exception {
 		System.out.print("\ncen: ");
 		printVector();
-		System.out.print("points: ");
+		System.out.print("\npoints: ");
 		// iterate through assigned data points with list iterator
 		Iterator<DataPoint> iter = this.getReferences().iterator();
 		while(iter.hasNext()) {

@@ -22,6 +22,35 @@ import java.util.Iterator;
  */
 
 public class Utilities{	
+	/**
+	 * This methods returns initialized data points to a given array of vectors
+	 * @param vectors
+	 * @return DataPoints
+	 * @throws Exception
+	 */
+	public static DataPoint[] initDataPoints(double[][] vectors) throws Exception {
+		boolean testDimension = true;
+		int dimension = vectors[0].length;
+		// check whether all vectors have the same dimension
+		for(int i = 0; i < vectors.length; i++) {
+			if(vectors[i].length != dimension) {
+				testDimension = false;
+				break;
+			}
+		}
+		// initialize Data Points with given vectors
+		if(testDimension) {
+			DataPoint[] points = new DataPoint[vectors.length];
+			for(int i = 0; i < vectors.length; i++) {
+				points[i] = new DataPoint(vectors[i]);
+			}
+			return points;
+		}
+		// not the same dimension --> code won't work
+		else {
+			throw new Exception("Vectors have not the same dimension.");
+		}
+	}
 	
 	/**
 	 * pNorm, calculates the p-norm between two vectors (refers to linear algebra II)
@@ -257,10 +286,7 @@ public class Utilities{
 			// return centroids
 			return newCentroids;
 		}
-		
-		
+			
 	}
-	
-	
 	
 }

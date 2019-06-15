@@ -1,5 +1,5 @@
 package kmeans;
-
+import readFile.FileReader;;
 /**
  * 
  * @author florianwolf
@@ -11,16 +11,20 @@ package kmeans;
 public class MainKmeans {
 	public static void main(String[] args) throws Exception{
 		
-		// initialize data points
-		DataPoint[] points = {
-		new DataPoint(1.0, 1.0),
-		new DataPoint(1.0, 2.0),
-		new DataPoint(2.0, 2.0),
-		new DataPoint(2.0, 1.0),
-		new DataPoint(4.0, 5.0),
-		new DataPoint(4.0, 4.0),
-		new DataPoint(5.0, 4.0),
-		new DataPoint(5.0, 5.0)};
+		double[][] vectors = FileReader.returnVectors("DataPoints.txt");
+		DataPoint[] points = Utilities.initDataPoints(vectors);
+		
+		
+//		// initialize data points
+//		DataPoint[] points = {
+//		new DataPoint(1.0, 1.0),
+//		new DataPoint(1.0, 2.0),
+//		new DataPoint(2.0, 2.0),
+//		new DataPoint(2.0, 1.0),
+//		new DataPoint(4.0, 5.0),
+//		new DataPoint(4.0, 4.0),
+//		new DataPoint(5.0, 4.0),
+//		new DataPoint(5.0, 5.0)};
 		
 		// threshold to check for change
 		double threshold = Utilities.getMinComponent(points);
