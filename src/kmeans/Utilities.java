@@ -1,5 +1,7 @@
 package kmeans;
 
+import java.util.Iterator;
+
 //import java.util.Iterator;
 
 /**
@@ -129,44 +131,26 @@ public class Utilities{
 		double[] temp = new double[dimension];
 		
 		
-//		Iterator<DataPoint> iter = (currCentroid.getReferences()).iterator();
-		//iterate through all data points assigned to the current centroid
-		
-//		//currCentroid.printCentroid();
-//		//System.out.println("Länge: " + (currCentroid.getReferences()).size());
-//		while(iter.hasNext()) {
-//			//iter.next().printVector();
-//			//System.out.print("\n" + (iter.next()).getCoord(0));
-//			for(int i = 0; i < dimension; i++) {
-//				// sum over all coordinates off all vectors
-//				temp[i] = temp[i] + (iter.next()).getCoord(i);
-//			}
-//			
-//		}
-		
-		/* ------------------------------------------------------------------
-		 * Note: I am not using the list iterator at this point, because of
-		 * different reasons:
-		 * ------------------------------------------------------------------
-		 * 	- I don't change any objects inside the lists,
-		 * 		as well as I don't change its size
-		 *  - I have to iterate through every component of every list object
-		 *  	a realization of this with the list iterator is way to complicated
-		 *  	because I can't hold a current list element, without getting the 
-		 *  	next on (iter.next()) because I need this command multiple times
-		 *  	(while iterating through each component of a vector)
-		 *  	so I don't get the right vector components without traversing
-		 *  	my list from front to back and so on
-		 * ------------------------------------------------------------------
-		 */
+		Iterator<DataPoint> iter = (currCentroid.getReferences()).iterator();
 		
 		//iterate through all data points assigned to the current centroid
-		for(int k = 0; k < currCentroid.getReferences().size(); k++) {
+		while(iter.hasNext()) {
+			DataPoint tempDataPoint = iter.next();
+			//System.out.print("\n" + (iter.next()).getCoord(0));
 			for(int i = 0; i < dimension; i++) {
 				// sum over all coordinates off all vectors
-				temp[i] = temp[i] + currCentroid.getDataPoint(k).getCoord(i);
+				temp[i] = temp[i] + tempDataPoint.getCoord(i);
 			}
+			
 		}
+		
+//		//iterate through all data points assigned to the current centroid
+//		for(int k = 0; k < currCentroid.getReferences().size(); k++) {
+//			for(int i = 0; i < dimension; i++) {
+//				// sum over all coordinates off all vectors
+//				temp[i] = temp[i] + currCentroid.getDataPoint(k).getCoord(i);
+//			}
+//		}
 		
 		// get mean value of each coordinate
 		for(int l = 0; l < dimension; l++) {

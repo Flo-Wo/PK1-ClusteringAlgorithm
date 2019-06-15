@@ -11,23 +11,13 @@ package kmeans;
 public class DataPoint {
 	// varArg/array to represent the vector coefficients
 	private double[] vector;
-	// counter, to get the amount of data points
-	private static int counter = 0;
 	
 	// constructors
 	public DataPoint(double... vector) {
 		this.vector = vector;
-		counter++;
 	}
 	
 	// get/set methods
-	
-	/**
-	 * @return amount of data points
-	 */
-	public static int getCounter() {
-		return counter;
-	}
 	/**
 	 * 
 	 * @return vector coordinates
@@ -59,7 +49,7 @@ public class DataPoint {
 	 */
 	public void printVector() {
 		System.out.print("(");
-		for(int j = 0 ; j < vector.length - 1; j++) {
+		for(int j = 0 ; j < this.getDimension() - 1; j++) {
 			System.out.print(vector[j] + "/");
 		}
 		System.out.print(vector[vector.length -1]);
