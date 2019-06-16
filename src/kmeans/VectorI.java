@@ -8,7 +8,7 @@ package kmeans;
  * corresponding methods
  */
 
-public interface VectorI {
+public abstract interface VectorI {
 	public double[] getVector();
 	public int getDimension();
 	public double getCoord(int i) throws Exception;

@@ -14,18 +14,6 @@ public class MainKmeans {
 		double[][] vectors = FileReader.returnVectors("DataPoints.txt");
 		DataPoint[] points = Utilities.initDataPoints(vectors);
 		
-		
-//		// initialize data points
-//		DataPoint[] points = {
-//		new DataPoint(1.0, 1.0),
-//		new DataPoint(1.0, 2.0),
-//		new DataPoint(2.0, 2.0),
-//		new DataPoint(2.0, 1.0),
-//		new DataPoint(4.0, 5.0),
-//		new DataPoint(4.0, 4.0),
-//		new DataPoint(5.0, 4.0),
-//		new DataPoint(5.0, 5.0)};
-		
 		// threshold to check for change
 		double threshold = Utilities.getMinComponent(points);
 		
@@ -33,7 +21,7 @@ public class MainKmeans {
 		int p = 2;
 		
 		// amount of centroids
-		int k = 2;
+		int k = 4;
 		
 		
 		//current Centroids

@@ -11,6 +11,8 @@ import java.util.Scanner;
  * @author florianwolf
  * 
  * This class provides the file reader method, to read vectors from a .csv-style .txt-File
+ * - returnVectors
+ * - sameDimension
  *
  */
 
@@ -22,11 +24,11 @@ public class FileReader {
 	 * @throws Exception
 	 */
 	public static double[][] returnVectors(String filename) throws Exception{
-		// list to hold the vectors
-		List<double[]> tempVectors = new ArrayList<double[]>();
 		// create file
 		File file = new File(filename);
 		if(file.exists()) {
+			// list to hold the vectors
+			List<double[]> tempVectors = new ArrayList<double[]>();
 			// creating scanner and reading the file
 			Scanner inputStream = new Scanner(file);
 			while(inputStream.hasNext()) {
@@ -48,13 +50,38 @@ public class FileReader {
 			for(int i = 0; i < tempVectors.size(); i++) {
 				vectors[i] = tempVectors.get(i);
 			}
-			// return all vectors
-			return vectors;
+			boolean testDimension = sameDimension(vectors);
+			if(testDimension) {
+				// return all vectors
+				return vectors;
+			}
+			else {
+				throw new IllegalArgumentException("Vectors have not the same dimension.");
+			}
 		}
 		// File not found
 		else {
 			throw new FileNotFoundException("File not found.");
 		}
+	}
+	/**
+	 * This methods checks, whether the input vectors have the same dimension
+	 * @param vectors
+	 * @return sameDimension
+	 */
+	public static boolean sameDimension(double[][] vectors) {
+		// check for same length
+		boolean testDimension = true;
+		// get first dimension
+		int dimension = vectors[0].length;
+		// check whether all vectors have the same dimension
+		for(int i = 1; i < vectors.length; i++) {
+			if(vectors[i].length != dimension) {
+				testDimension = false;
+				break;
+			}
+		}
+		return testDimension;
 	}
 
 }

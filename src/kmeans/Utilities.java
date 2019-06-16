@@ -9,6 +9,7 @@ import java.util.Iterator;
  * @author florianwolf
  *
  * this class provides the following functions for the k-means algorithm
+ * 	- initDataPoints
  *	- pNorm 
  *	- linear Normalization
  *	- argMin
@@ -29,27 +30,15 @@ public class Utilities{
 	 * @throws Exception
 	 */
 	public static DataPoint[] initDataPoints(double[][] vectors) throws Exception {
-		boolean testDimension = true;
-		int dimension = vectors[0].length;
-		// check whether all vectors have the same dimension
-		for(int i = 0; i < vectors.length; i++) {
-			if(vectors[i].length != dimension) {
-				testDimension = false;
-				break;
-			}
-		}
+		
 		// initialize Data Points with given vectors
-		if(testDimension) {
-			DataPoint[] points = new DataPoint[vectors.length];
-			for(int i = 0; i < vectors.length; i++) {
-				points[i] = new DataPoint(vectors[i]);
-			}
-			return points;
+		// (already checked for same dimensions)
+		DataPoint[] points = new DataPoint[vectors.length];
+		for(int i = 0; i < vectors.length; i++) {
+			points[i] = new DataPoint(vectors[i]);
 		}
-		// not the same dimension --> code won't work
-		else {
-			throw new Exception("Vectors have not the same dimension.");
-		}
+		return points;
+		
 	}
 	
 	/**
