@@ -17,7 +17,8 @@ import java.util.Iterator;
  *	- updateCentroid
  *	- stillChange
  *	- printResults
- *	- getMinComponents
+ *	- getThreshold
+ *	- getCommaDigits
  *	- getRandomCentroids
  *	
  */
@@ -215,13 +216,13 @@ public class Utilities{
 	}
 	
 	/**
-	 * This function calculates the threshold by
-	 * using the absolute minimal value and divides it by 1000
+	 * This function calculates the threshold to check for changes by
+	 * taking the absolute minimal value after the comma and divides it by 100
 	 * @param points
 	 * @return minCoeff
 	 * @throws Exception 
 	 */
-	public static double getMinComponent(DataPoint[] points) throws Exception {
+	public static double getThreshold(DataPoint[] points) throws Exception {
 		// set to positive infinity, to get directly a smaller value
 		double minCoeff = Double.POSITIVE_INFINITY;
 		// iterate through all data points
@@ -229,14 +230,22 @@ public class Utilities{
 			// iterate through every component of each vector
 			for(int k = 0; k < points[i].getDimension(); k++) {
 				// get minimal absolute value, value zero is not allowed
-				if(Math.abs(points[i].getCoord(k)) < minCoeff && Math.abs(points[i].getCoord(k)) != 0) {
-					minCoeff = Math.abs(points[i].getCoord(k));
+				if(Math.abs(getCommaDigits(points[i].getCoord(k))) < minCoeff && Math.abs(getCommaDigits(points[i].getCoord(k))) != 0) {
+					minCoeff = Math.abs(getCommaDigits(points[i].getCoord(k)));
 				}
 			}
 		}
-		System.out.println(minCoeff);
+		//System.out.println(minCoeff);
 		// divide this value by 1000
-		return minCoeff/1000.0;
+		return minCoeff/100.0;
+	}
+	/**
+	 * This method simply returns the digits after the comma of a double value
+	 * @param number
+	 * @return digits after comma
+	 */
+	private static double getCommaDigits(double number) {
+		return (number % 1);
 	}
 	
 	/**

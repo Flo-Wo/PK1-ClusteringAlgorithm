@@ -15,8 +15,8 @@ public class MainKmeans {
 		DataPoint[] points = Utilities.initDataPoints(vectors);
 		
 		// threshold to check for change
-		double threshold = Utilities.getMinComponent(points);
-		System.out.println(threshold);
+		double threshold = Utilities.getThreshold(points);
+		//System.out.println(threshold);
 		
 		// value for p-Norm
 		int p = 2;
