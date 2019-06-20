@@ -8,7 +8,8 @@ package kmeans;
  * used to represent a data point for the k-means algorithm
  *
  */
-public class Vector implements VectorI{
+// there should not be an instance of the class Vectors
+public abstract class Vector implements VectorI{
 	
 	// properties
 	private double[] coordinates;
@@ -44,7 +45,7 @@ public class Vector implements VectorI{
 	 * @throws Exception
 	 */
 	public double getCoord(int index) throws Exception {
-		if(index < 0 || index > this.getDimension()) {
+		if(index < 0 || index >= this.getDimension()) {
 			throw new Exception("Index too high or negative.");
 		}
 		else {

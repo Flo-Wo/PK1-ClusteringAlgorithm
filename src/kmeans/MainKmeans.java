@@ -16,6 +16,7 @@ public class MainKmeans {
 		
 		// threshold to check for change
 		double threshold = Utilities.getMinComponent(points);
+		System.out.println(threshold);
 		
 		// value for p-Norm
 		int p = 2;

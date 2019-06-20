@@ -234,6 +234,7 @@ public class Utilities{
 				}
 			}
 		}
+		System.out.println(minCoeff);
 		// divide this value by 1000
 		return minCoeff/1000.0;
 	}
