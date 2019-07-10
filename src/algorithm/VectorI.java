@@ -13,4 +13,5 @@ public interface VectorI {
 	int getDimension();
 	double getCoord(int i) throws Exception;
 	void printVector() throws Exception;
+	double[] get2DCoord() throws Exception;
 }

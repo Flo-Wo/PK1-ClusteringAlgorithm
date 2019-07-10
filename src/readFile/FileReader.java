@@ -72,7 +72,7 @@ public class FileReader {
 			e.printStackTrace();
 			System.out.println("Ups, something went wrong, returned null.");
 			return null;
-		}	
+		}
 }
 		
 

@@ -1,91 +1,159 @@
 package gui;
 
+import readFile.FileReader;
+
+import javafx.scene.shape.Rectangle;
+
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import algorithm.Centroid;
+import algorithm.DataPoint;
 import algorithm.KMeans;
+import algorithm.Utilities;
+import algorithm.Vector;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.Scene; 
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.scene.chart.NumberAxis; 
-import javafx.scene.chart.ScatterChart; 
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane; 
- 
- 
-public class MainGui extends Application {
-	@Override public void start(Stage stage) {
-        stage.setTitle("Scatter Chart Sample");
-        final NumberAxis xAxis = new NumberAxis(-10, 10, 1);
-        final NumberAxis yAxis = new NumberAxis(-100, 500, 100);        
-        final ScatterChart<Number,Number> sc = new ScatterChart<Number,Number>(xAxis,yAxis);
-        xAxis.setLabel("x-coordinate");                
-        yAxis.setLabel("y-coordinate");
-        sc.setTitle("K-Means Algorithm (2D Version)");
-       
-        XYChart.Series series1 = new XYChart.Series();
-        series1.setName("Equities");
-        series1.getData().add(new XYChart.Data(4.2, 193.2));
-        series1.getData().add(new XYChart.Data(2.8, 33.6));
-        
-        XYChart.Series series2 = new XYChart.Series();
-        series2.setName("Mutual funds");
-        series2.getData().add(new XYChart.Data(5.2, 229.2));
- 
-        sc.getData().addAll(series1, series2);
-        
-        GridPane grid = new GridPane();
-        
-        grid.add(sc, 0, 0);
-        
-        Button button = new Button("Go");
-        
-        button.setOnAction(new EventHandler<ActionEvent>() {
-			
-			@Override
-			public void handle(ActionEvent event) {
-				try {
-					KMeans algo = new KMeans();
-					algo.runAlgo(new KMeansListener() {
-						
-						@Override
-						public void updateGraph(KMeans algo){
-							try {
-								algo.currCentroids[0].printVector();
-							} catch (Exception e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							};
-						}
-					});
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		});
-        
-        grid.add(button, 1, 0);
-        
-        
-        Scene scene  = new Scene(grid, 500, 400);
-        stage.setScene(scene);
-        stage.show();
-    }
- 
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
-    class myKmeansListener implements KMeansListener{
+import javafx.util.Duration;
 
-		@Override
-		public void updateGraph(KMeans algo) {
-			
+/**
+ * 
+ * @author florianwolf
+ *
+ */
+
+public class MainGui extends Application{
+	
+	
+	/**
+	 * Constructor
+	 */
+	public MainGui() {
+		
+	}
+	
+	
+	/**
+	 * initialize any kind of algorithm, e.g., sorting
+	 */
+	public void init(){
+		
+	}
+
+	/**
+	 * initialize the graphical components
+	 */
+	public void start(Stage primaryStage) throws Exception{
+		
+		KMeans algo = new KMeans("DataTestBig.txt", 4, 2);
+		algo.runAlgo();
+		
+		//root of the scene graph without any layout
+		Pane root = new Pane();  
+		
+
+        //the scene gets the root of the scene graph
+        Scene scene = new Scene(root, 520, 520);
+        
+        //the stage uses the scene and displays a title
+        primaryStage.setTitle("kMeans algorithm - Scatterplot");        
+        primaryStage.setScene(scene);
+		
+		// get min/max Values
+		double[] normVal = Utilities.getMinMax2D(algo.getDataPoints());
+		
+		// print initial data set
+		MainGui.printPoints(algo.getDataPoints(), root, normVal);
+		
+//		List<Centroid[]> buffer = algo.getBuffer();
+		
+//		Rectangle rec = new Rectangle(buffer.get(0)[0].getCoord(0), buffer.get(0)[0].getCoord(1), Color.BLACK);
+//		root.getChildren().add(rec);
+//		
+//		
+//		SequentialTransition sequentialTransition = new SequentialTransition();
+//		
+//		for(int i = 1; i < 2; i++) {
+//			TranslateTransition translateTransition = new TranslateTransition();
+//			translateTransition.setNode(rec);
+//			translateTransition.setFromX(buffer.get(i-1)[0].getCoord(0));
+//			translateTransition.setFromY(buffer.get(i-1)[0].getCoord(1));
+//			//rotateTransition.play();
+//			translateTransition.setToX(buffer.get(i)[0].getCoord(0));
+//			translateTransition.setToY(buffer.get(i)[0].getCoord(1));
+//			translateTransition.setDuration(Duration.seconds(10));
+//			//translateTransition.play();
+//			sequentialTransition.getChildren().addAll(translateTransition);
+//		}
+//		sequentialTransition.play();
+		
+		
+//		TranslateTransition translateTransition = new TranslateTransition();
+//		Rectangle rectangle = new Rectangle(10,10, Color.BLACK);
+//		root.getChildren().add(rectangle);
+//		translateTransition.setNode(rectangle);
+//		//translateTransition.setFromX(10);
+//		//translateTransition.setFromY(10);
+//		//rotateTransition.play();
+//		translateTransition.setToX(350);
+//		translateTransition.setToY(350);
+//		translateTransition.setDuration(Duration.seconds(10));
+//		translateTransition.play();
+		
+		primaryStage.show();
+        
+	}
+	
+	
+	/**
+	 * Main Method to test the application
+	 * @param args
+	 */
+	public static void main(String[] args)
+	{
+		Application.launch(MainGui.class);
+	}
+	
+	
+	/**
+	 * Print data Points at the beginning of the Gui algorithm 
+	 * @param points
+	 * @param root
+	 * @param normVal
+	 * @throws Exception
+	 */
+	public static void printPoints(DataPoint[] points, Pane root, double[] normVal) throws Exception {
+		
+		for(int i = 0; i < points.length; i++){
+			MainGui.printDP(points[i], root, normVal);
 		}
-    	
-    }
-
+	}
+	/**
+	 * Print a single data point/centroid
+	 * @param point
+	 * @param root
+	 * @param normVal
+	 * @throws Exception
+	 */
+	public static void printDP(Vector vector, Pane root, double[] normVal) throws Exception {
+		Rectangle rec = new Rectangle();
+		// scale them up, to get a bigger image, and shift them to right and bottom, to avoid getting intersections
+		// between data points and the window borders
+		rec.setX(500* Utilities.linNormalize(vector.get2DCoord()[0], normVal[0], normVal[1]) + 10);
+		rec.setY(500* Utilities.linNormalize(vector.get2DCoord()[1], normVal[0], normVal[1]) + 10);
+		rec.setHeight(5);
+		rec.setWidth(5);
+		rec.setFill(Color.WHITE);
+		rec.setStroke(Color.BLACK);
+		root.getChildren().add(rec);
+	}
+	
 }
-
-

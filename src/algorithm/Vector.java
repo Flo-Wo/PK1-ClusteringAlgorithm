@@ -65,5 +65,22 @@ public abstract class Vector implements VectorI{
 		System.out.print(this.getCoord(this.getDimension() - 1));
 		System.out.print(")");
 	}
+	/**
+	 * Method to get the first to coordinates of a vector (for the scatterplot)
+	 * @return x/y coordinate of a vector
+	 * @throws Exception
+	 */
+	public double[] get2DCoord()throws Exception{
+		double[] temp = new double[2];
+		if(this.getDimension() >= 2) {
+			temp[0] = this.getCoord(0);
+			temp[1] = this.getCoord(1);
+		}
+		else {
+			throw new IllegalArgumentException("Dimension is too small, splitting into 2D is not possible.");
+		}
+		return temp;
+	}
+	
 
 }

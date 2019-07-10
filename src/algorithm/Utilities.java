@@ -20,6 +20,7 @@ import java.util.Iterator;
  *	- getThreshold
  *	- getCommaDigits
  *	- getRandomCentroids
+ *	- getMinMax2D
  *	
  */
 
@@ -70,10 +71,11 @@ public class Utilities{
 	}
 	/**
 	 * linNormalization, normalizes a data point in respect to the min/max values of the data
+	 * outcome is a double value between 0 and 1
 	 * @param value
 	 * @return normalized data point
 	 */
-	public static double linNormalize(double value, double maxValue, double minValue) {
+	public static double linNormalize(double value, double minValue, double maxValue) {
 		//Declaration of output value
 		double normalizedValue;
 		//normalize the input value with formula (v-max)/(max-min)
@@ -217,7 +219,7 @@ public class Utilities{
 	
 	/**
 	 * This function calculates the threshold to check for changes by
-	 * taking the absolute minimal value after the comma and divides it by 100
+	 * taking the absolute minimal value after the comma and divides it by 1000
 	 * @param points
 	 * @return minCoeff
 	 * @throws Exception 
@@ -288,5 +290,43 @@ public class Utilities{
 		}
 			
 	}
+	
+	/**
+	 * Method to return minimal and maximal coefficient of the first two dimensions
+	 * to a given array of data points
+	 * @param points
+	 * @return [minVal, maxVal]
+	 * @throws Exception
+	 */
+	public static double[] getMinMax2D(DataPoint[] points) throws Exception {
+		// minVal with biggest number possible initialized
+		double minVal = Double.POSITIVE_INFINITY;
+		// maxVal with smallest number possible initialized
+		double maxVal = Double.NEGATIVE_INFINITY;
+		// iterate through all points
+		for(int k = 0; k < points.length; k++) {
+			// check if the dimension is high enough
+			if(points[k].getDimension() >= 2) {
+				// iterate rhough first and second dimension
+				for(int i = 0; i < 2; i++) {
+					// check for minVal
+					if(points[k].getCoord(i) < minVal) {
+						minVal = points[k].getCoord(i);
+					}
+					// check for maxVal
+					else if(points[k].getCoord(i) > maxVal) {
+						maxVal = points[k].getCoord(i);
+					}
+				}
+			}
+			else {
+				throw new Exception("Not all Datapoints have the same dimension, no min/max Val. found.");
+			}
+			
+		}
+		double[] temp = {minVal, maxVal};
+		return temp;
+	}
+	
 	
 }
