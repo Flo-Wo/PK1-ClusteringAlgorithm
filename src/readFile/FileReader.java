@@ -16,21 +16,31 @@ import java.util.Scanner;
  *
  */
 
+
+
 public class FileReader {
 	/**
 	 * This methods reads a given file and returns an array of arrays, representing vectors
+	 * 
+	 * File formatting (e.g):
+	 * 1, 2, 4, 6
+	 * 7, 8, 9, 10.789
+	 * 
 	 * @param filename
 	 * @return array of vectors
 	 * @throws Exception
 	 */
+	
 	public static double[][] returnVectors(String filename) throws Exception{
 		// create file
 		File file = new File(filename);
-		if(file.exists()) {
-			// list to hold the vectors
-			List<double[]> tempVectors = new ArrayList<double[]>();
-			// creating scanner and reading the file
-			Scanner inputStream = new Scanner(file);
+		
+		// list to hold the vectors
+		List<double[]> tempVectors = new ArrayList<double[]>();
+		// creating scanner and reading the file
+		Scanner inputStream;
+		try {
+			inputStream = new Scanner(file);
 			while(inputStream.hasNext()) {
 				// get next vector
 				String data = inputStream.nextLine();
@@ -58,12 +68,14 @@ public class FileReader {
 			else {
 				throw new IllegalArgumentException("Vectors have not the same dimension.");
 			}
-		}
-		// File not found
-		else {
-			throw new FileNotFoundException("File not found.");
-		}
-	}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("Ups, something went wrong, returned null.");
+			return null;
+		}	
+}
+		
+
 	/**
 	 * This methods checks, whether the input vectors have the same dimension
 	 * @param vectors

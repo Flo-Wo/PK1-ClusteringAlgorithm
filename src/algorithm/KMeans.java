@@ -1,4 +1,4 @@
-package kmeans;
+package algorithm;
 import readFile.FileReader;;
 /**
  * 
@@ -8,7 +8,9 @@ import readFile.FileReader;;
  *
  */
 
-public class MainKmeans {
+public class KMeans {
+	
+	
 	public static void main(String[] args) throws Exception{
 		
 		double[][] vectors = FileReader.returnVectors("DataPoints.txt");
@@ -16,6 +18,7 @@ public class MainKmeans {
 		
 		// threshold to check for change
 		double threshold = Utilities.getThreshold(points);
+		// testing whether the threshold works
 		//System.out.println(threshold);
 		
 		// value for p-Norm
@@ -43,7 +46,7 @@ public class MainKmeans {
 			
 			int index = 0;
 			// assign all data points to closest centroid
-			for(int j=0; j < points.length; j++) {
+			for(int j = 0; j < points.length; j++) {
 				index = Utilities.argMin(points[j], currCentroids, p);
 				currCentroids[index].addDataPoint(points[j]);
 			}

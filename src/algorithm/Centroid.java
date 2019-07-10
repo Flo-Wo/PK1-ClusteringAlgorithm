@@ -1,4 +1,4 @@
-package kmeans;
+package algorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;

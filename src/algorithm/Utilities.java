@@ -1,4 +1,4 @@
-package kmeans;
+package algorithm;
 
 import java.util.Iterator;
 
@@ -223,8 +223,9 @@ public class Utilities{
 	 * @throws Exception 
 	 */
 	public static double getThreshold(DataPoint[] points) throws Exception {
-		// set to positive infinity, to get directly a smaller value
-		double minCoeff = Double.POSITIVE_INFINITY;
+		// set to 0.01, if for example all coordinates of all vectors are integers
+		// then the default should be 0.000001
+		double minCoeff = 0.01;
 		// iterate through all data points
 		for(int i = 0; i < points.length; i++) {
 			// iterate through every component of each vector
@@ -237,7 +238,7 @@ public class Utilities{
 		}
 		//System.out.println(minCoeff);
 		// divide this value by 1000
-		return minCoeff/100.0;
+		return minCoeff/1000.0;
 	}
 	/**
 	 * This method simply returns the digits after the comma of a double value
