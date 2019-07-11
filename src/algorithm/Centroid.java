@@ -76,5 +76,9 @@ public class Centroid extends Vector{
 		System.out.print("\n");
 	}
 	
+	public DataPoint[] toArray() {
+		return (DataPoint[]) this.references.toArray();
+	}
+	
 	
 }

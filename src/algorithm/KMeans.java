@@ -34,7 +34,7 @@ public class KMeans {
 	private Centroid[] newCentroids;
 	
 	// Hold Data for GUI implementation
-	private List<Centroid[]> DataBuffer = new ArrayList<Centroid[]>();
+	private Centroid[] finalData;
 	
 	//+++++++++++ constructors ++++++++++++
 	
@@ -67,8 +67,6 @@ public class KMeans {
 		// init random Centroids to Start-algorithm
 		this.newCentroids = Utilities.getRandomCentroids(this.points, this.newCentroids, k);
 		
-		// add init centroids with Circles
-		this.DataBuffer.add(newCentroids);
 	}
 	
 	
@@ -83,20 +81,11 @@ public class KMeans {
 	}
 	
 	/**
-	 * Method to get the dataBuffer, after the algorithm finished
-	 * @return DataBuffer
+	 * Get final situation --> finishes clusters
+	 * @return finalData
 	 */
-	public List<Centroid[]> getBuffer(){
-		return this.DataBuffer;
-	}
-	
-	
-	/**
-	 * Add current setting of the algorithm to the list buffer
-	 * @param currentCentroids
-	 */
-	public void addBuffer(Centroid[] currentCentroids) {
-		this.DataBuffer.add(currentCentroids);
+	public Centroid[] getFinalData() {
+		return this.finalData;
 	}
 	
 	
@@ -124,16 +113,13 @@ public class KMeans {
 			this.newCentroids = Utilities.upCurrCentroids(this.currCentroids, this.k);
 			
 			
-			// add current situation to the buffer for the GUI
-			// added Centroids and their assigned data points
-			this.DataBuffer.add(newCentroids);
-			
-			
-			
 			// check for changes
 		}while(Utilities.stillChange(this.currCentroids, this.newCentroids, this.threshold, this.p));
 		// print result
 		System.out.print("Result:");
+		// add final results to the buffer --> Gui
+		this.finalData = this.currCentroids;
+		
 		Utilities.printResults(this.currCentroids, this.k);
 	}
 	

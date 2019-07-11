@@ -1,44 +1,61 @@
 package gui;
 
-import readFile.FileReader;
 
-import javafx.scene.shape.Rectangle;
-
-
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import algorithm.Centroid;
-import algorithm.DataPoint;
 import algorithm.KMeans;
 import algorithm.Utilities;
-import algorithm.Vector;
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 /**
  * 
  * @author florianwolf
- *
+ * Main GUI Class
  */
 
 public class MainGui extends Application{
 	
 	
+	
+	// default properties
+	private int windowSize = 1000;
+	private int scale = windowSize - 500;
+	private double size = windowSize/100;
+
+	// constructor
+
 	/**
 	 * Constructor
 	 */
 	public MainGui() {
 		
 	}
+	
+	
+	// get/set methods
+	/**
+	 * Set new Window size (the scalar for the points will change automatically)
+	 * @param newSize
+	 */
+	public void setSize(int newSize) {
+		this.windowSize = newSize;
+	}
+	/**
+	 * Get the size of the window
+	 * @return Window size
+	 */
+	public int getSize() {
+		return this.windowSize;
+	}
+	
 	
 	
 	/**
@@ -56,57 +73,58 @@ public class MainGui extends Application{
 		KMeans algo = new KMeans("DataTestBig.txt", 4, 2);
 		algo.runAlgo();
 		
-		//root of the scene graph without any layout
-		Pane root = new Pane();  
 		
-
-        //the scene gets the root of the scene graph
-        Scene scene = new Scene(root, 520, 520);
-        
-        //the stage uses the scene and displays a title
-        primaryStage.setTitle("kMeans algorithm - Scatterplot");        
-        primaryStage.setScene(scene);
 		
 		// get min/max Values
 		double[] normVal = Utilities.getMinMax2D(algo.getDataPoints());
 		
+		// +++++ SCENE 1 ++++++++
+		
+        
+		//root of the scene graph without any layout
+		Pane root = new Pane();  
+		// root to align the button and the scene graphing
+		BorderPane root2 = new BorderPane();
+		
+		
 		// print initial data set
-		MainGui.printPoints(algo.getDataPoints(), root, normVal);
+		GuiUtilities.printPoints(algo.getDataPoints(), root, normVal, this.scale, this.size);
+		root2.setCenter(root);
 		
-//		List<Centroid[]> buffer = algo.getBuffer();
-		
-//		Rectangle rec = new Rectangle(buffer.get(0)[0].getCoord(0), buffer.get(0)[0].getCoord(1), Color.BLACK);
-//		root.getChildren().add(rec);
-//		
-//		
-//		SequentialTransition sequentialTransition = new SequentialTransition();
-//		
-//		for(int i = 1; i < 2; i++) {
-//			TranslateTransition translateTransition = new TranslateTransition();
-//			translateTransition.setNode(rec);
-//			translateTransition.setFromX(buffer.get(i-1)[0].getCoord(0));
-//			translateTransition.setFromY(buffer.get(i-1)[0].getCoord(1));
-//			//rotateTransition.play();
-//			translateTransition.setToX(buffer.get(i)[0].getCoord(0));
-//			translateTransition.setToY(buffer.get(i)[0].getCoord(1));
-//			translateTransition.setDuration(Duration.seconds(10));
-//			//translateTransition.play();
-//			sequentialTransition.getChildren().addAll(translateTransition);
-//		}
-//		sequentialTransition.play();
-		
-		
-//		TranslateTransition translateTransition = new TranslateTransition();
-//		Rectangle rectangle = new Rectangle(10,10, Color.BLACK);
-//		root.getChildren().add(rectangle);
-//		translateTransition.setNode(rectangle);
-//		//translateTransition.setFromX(10);
-//		//translateTransition.setFromY(10);
-//		//rotateTransition.play();
-//		translateTransition.setToX(350);
-//		translateTransition.setToY(350);
-//		translateTransition.setDuration(Duration.seconds(10));
-//		translateTransition.play();
+		//the scene gets the root of the scene graph
+        Scene scene1 = new Scene(root2, 580, 580);
+
+        
+		// +++++ SCENE 2 ++++++++
+        
+        // new pane, to draw the final results
+        Pane root3 = new Pane();
+        Centroid[] finalResult = algo.getFinalData();
+        
+        
+        // just for testing
+        List<Color> colours = new ArrayList<Color>();
+        colours.add(Color.GREEN);
+        colours.add(Color.RED);
+        colours.add(Color.BLUE);
+        colours.add(Color.YELLOW);
+        
+        GuiUtilities.printResults(finalResult, root3, normVal, colours, this.scale, this.size);
+        
+        //the scene gets the root of the scene graph
+        Scene scene2 = new Scene(root3, 580, 580);
+        
+        
+        // +++++ Layout and showing the Scenes ++++++++ 
+
+		Button button1= new Button("Show final Clusters");
+		button1.setOnAction(e -> primaryStage.setScene(scene2));
+		root2.setTop(button1);
+        
+        
+        //the stage uses the scene and displays a title
+        primaryStage.setTitle("kMeans algorithm - Scatterplot");        
+        primaryStage.setScene(scene1);
 		
 		primaryStage.show();
         
@@ -120,40 +138,6 @@ public class MainGui extends Application{
 	public static void main(String[] args)
 	{
 		Application.launch(MainGui.class);
-	}
-	
-	
-	/**
-	 * Print data Points at the beginning of the Gui algorithm 
-	 * @param points
-	 * @param root
-	 * @param normVal
-	 * @throws Exception
-	 */
-	public static void printPoints(DataPoint[] points, Pane root, double[] normVal) throws Exception {
-		
-		for(int i = 0; i < points.length; i++){
-			MainGui.printDP(points[i], root, normVal);
-		}
-	}
-	/**
-	 * Print a single data point/centroid
-	 * @param point
-	 * @param root
-	 * @param normVal
-	 * @throws Exception
-	 */
-	public static void printDP(Vector vector, Pane root, double[] normVal) throws Exception {
-		Rectangle rec = new Rectangle();
-		// scale them up, to get a bigger image, and shift them to right and bottom, to avoid getting intersections
-		// between data points and the window borders
-		rec.setX(500* Utilities.linNormalize(vector.get2DCoord()[0], normVal[0], normVal[1]) + 10);
-		rec.setY(500* Utilities.linNormalize(vector.get2DCoord()[1], normVal[0], normVal[1]) + 10);
-		rec.setHeight(5);
-		rec.setWidth(5);
-		rec.setFill(Color.WHITE);
-		rec.setStroke(Color.BLACK);
-		root.getChildren().add(rec);
 	}
 	
 }
