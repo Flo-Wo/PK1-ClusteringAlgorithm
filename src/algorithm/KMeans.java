@@ -1,6 +1,4 @@
 package algorithm;
-import java.util.ArrayList;
-import java.util.List;
 
 import readFile.FileReader;;
 /**

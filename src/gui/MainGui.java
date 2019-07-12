@@ -1,9 +1,5 @@
 package gui;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
 import algorithm.Centroid;
 import algorithm.KMeans;
 import algorithm.Utilities;
@@ -26,8 +22,8 @@ public class MainGui extends Application{
 	
 	
 	// default properties
-	private int windowSize = 1000;
-	private int scale = windowSize - 500;
+	private int windowSize = 800;
+	private double scale = windowSize - 3.25 * windowSize/10;
 	private double size = windowSize/100;
 
 	// constructor
@@ -69,18 +65,23 @@ public class MainGui extends Application{
 	 * initialize the graphical components
 	 */
 	public void start(Stage primaryStage) throws Exception{
+		// number of centroids the data set should be clustered with
+		int cen = 10;
+		// norm the algorithm should use for distance calculcations
+		int norm = 2;
 		
-		KMeans algo = new KMeans("DataTestBig.txt", 4, 2);
+		KMeans algo = new KMeans("DataTestBig.txt", cen, norm);
 		algo.runAlgo();
 		
 		
 		
-		// get min/max Values
-		double[] normVal = Utilities.getMinMax2D(algo.getDataPoints());
+		// get min/max Values for first and second dimension
+		double[] normVal1D = Utilities.getMinMax1D(algo.getDataPoints());
+		double[] normVal2D = Utilities.getMinMax2D(algo.getDataPoints());
+		
+		
 		
 		// +++++ SCENE 1 ++++++++
-		
-        
 		//root of the scene graph without any layout
 		Pane root = new Pane();  
 		// root to align the button and the scene graphing
@@ -88,31 +89,27 @@ public class MainGui extends Application{
 		
 		
 		// print initial data set
-		GuiUtilities.printPoints(algo.getDataPoints(), root, normVal, this.scale, this.size);
+		GuiUtilities.printPoints(algo.getDataPoints(), root, normVal1D, normVal2D, this.scale, this.size);
 		root2.setCenter(root);
 		
 		//the scene gets the root of the scene graph
-        Scene scene1 = new Scene(root2, 580, 580);
+        Scene scene1 = new Scene(root2, this.windowSize, this.windowSize);
 
         
 		// +++++ SCENE 2 ++++++++
-        
         // new pane, to draw the final results
         Pane root3 = new Pane();
         Centroid[] finalResult = algo.getFinalData();
         
         
-        // just for testing
-        List<Color> colours = new ArrayList<Color>();
-        colours.add(Color.GREEN);
-        colours.add(Color.RED);
-        colours.add(Color.BLUE);
-        colours.add(Color.YELLOW);
+        // CREATE COLOR SET
+        Color[] colours = GuiUtilities.createColourSet(cen);
         
-        GuiUtilities.printResults(finalResult, root3, normVal, colours, this.scale, this.size);
+        
+        GuiUtilities.printResults(finalResult, root3, normVal1D, normVal2D, colours, this.scale, this.size);
         
         //the scene gets the root of the scene graph
-        Scene scene2 = new Scene(root3, 580, 580);
+        Scene scene2 = new Scene(root3, this.windowSize, this.windowSize);
         
         
         // +++++ Layout and showing the Scenes ++++++++ 
@@ -123,7 +120,7 @@ public class MainGui extends Application{
         
         
         //the stage uses the scene and displays a title
-        primaryStage.setTitle("kMeans algorithm - Scatterplot");        
+        primaryStage.setTitle("kMeans algorithm - Scatterplot (Florian Wolf)");        
         primaryStage.setScene(scene1);
 		
 		primaryStage.show();

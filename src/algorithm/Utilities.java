@@ -20,6 +20,7 @@ import java.util.Iterator;
  *	- getThreshold
  *	- getCommaDigits
  *	- getRandomCentroids
+ *	- getMinMax1D
  *	- getMinMax2D
  *	
  */
@@ -238,10 +239,10 @@ public class Utilities{
 				}
 			}
 		}
-		//System.out.println(minCoeff);
 		// divide this value by 1000
 		return minCoeff/1000.0;
 	}
+	
 	/**
 	 * This method simply returns the digits after the comma of a double value
 	 * @param number
@@ -292,8 +293,36 @@ public class Utilities{
 	}
 	
 	/**
-	 * Method to return minimal and maximal coefficient of the first two dimensions
-	 * to a given array of data points
+	 * Method to return minimal and maximal coefficient of the first dimension
+	 * to a given array of data points (used for normalization)
+	 * @param points
+	 * @return [minVal, maxVal]
+	 * @throws Exception
+	 */
+	public static double[] getMinMax1D(DataPoint[] points) throws Exception {
+		// minVal with biggest number possible initialized
+		double minVal = Double.POSITIVE_INFINITY;
+		// maxVal with smallest number possible initialized
+		double maxVal = Double.NEGATIVE_INFINITY;
+		// iterate through all points
+		for(int k = 0; k < points.length; k++) {
+			// check for minimal value
+			if(points[k].getCoord(0) < minVal) {
+				minVal = points[k].getCoord(0);
+			}
+			// check for maxVal
+			else if(points[k].getCoord(0) > maxVal) {
+				maxVal = points[k].getCoord(0);
+			}
+	
+		}
+		double[] temp = {minVal, maxVal};
+		return temp;
+	}
+	
+	/**
+	 * Method to return minimal and maximal coefficient of the second dimension
+	 * to a given array of data points (used for normalization)
 	 * @param points
 	 * @return [minVal, maxVal]
 	 * @throws Exception
@@ -307,17 +336,15 @@ public class Utilities{
 		for(int k = 0; k < points.length; k++) {
 			// check if the dimension is high enough
 			if(points[k].getDimension() >= 2) {
-				// iterate rhough first and second dimension
-				for(int i = 0; i < 2; i++) {
-					// check for minVal
-					if(points[k].getCoord(i) < minVal) {
-						minVal = points[k].getCoord(i);
-					}
-					// check for maxVal
-					else if(points[k].getCoord(i) > maxVal) {
-						maxVal = points[k].getCoord(i);
-					}
+				// check for minimal value
+				if(points[k].getCoord(1) < minVal) {
+					minVal = points[k].getCoord(1);
 				}
+				// check for maximal value
+				else if(points[k].getCoord(1) > maxVal) {
+					maxVal = points[k].getCoord(1);
+				}
+				
 			}
 			else {
 				throw new Exception("Not all Datapoints have the same dimension, no min/max Val. found.");
