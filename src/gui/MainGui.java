@@ -66,14 +66,12 @@ public class MainGui extends Application{
 	 */
 	public void start(Stage primaryStage) throws Exception{
 		// number of centroids the data set should be clustered with
-		int cen = 10;
+		int cen = 6;
 		// norm the algorithm should use for distance calculcations
 		int norm = 2;
 		
 		KMeans algo = new KMeans("DataTestBig.txt", cen, norm);
 		algo.runAlgo();
-		
-		
 		
 		// get min/max Values for first and second dimension
 		double[] normVal1D = Utilities.getMinMax1D(algo.getDataPoints());
@@ -115,7 +113,7 @@ public class MainGui extends Application{
         // +++++ Layout and showing the Scenes ++++++++ 
 
 		Button button1= new Button("Show final Clusters");
-		button1.setOnAction(e -> primaryStage.setScene(scene2));
+		button1.setOnAction(event -> primaryStage.setScene(scene2));
 		root2.setTop(button1);
         
         
